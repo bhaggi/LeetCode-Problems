@@ -1,0 +1,208 @@
+Problem:-
+    Given an mXn integer matrix, if an element is 0,set its entire row and column to 0.
+Original Matrix:
+1 1 1 
+1 0 1 
+1 1 1 
+
+Matrix after setting zeros:
+1 0 1 
+0 0 0 
+1 0 1
+
+Algorithm:-
+
+Step 1:- Start
+Step 2:- Initialize the input matrix and result matrix for output.
+Step 3:- Consider 2 markers/flags m1,m2 for row and column.
+Step 4:- Traverse the matrix, to check that which row and column having "0"
+Step 5:- Update the 1st element of the respective row and column as 0 using markers.
+Step 6:- OR if the 1st row/1st column having 0 we will place flags in that position for now & handle at last.
+Step 7:- If 1st row/1st column have 0 now we will update the respective row and column as 0 using flags
+Step 8:- If we used markers to find any other as 0, will make that respective row and column as zero.
+Step 9:- Print output array and STOP.
+
+Explanation:-
+
+You are given a matrix, and if any element in the matrix is 0, the entire row and column that contain this 0 should be set to 0. You must modify the matrix in place, which means you can't use extra memory like another matrix to solve the problem.
+
+Steps:
+Identify rows and columns that need to be zeroed:
+
+If a 0 is found in a cell (i.e., matrix[i][j]), it means that the entire row i and column j should eventually become all 0s.
+However, you don't want to make the change immediately because you need to finish scanning the entire matrix first.
+Instead of using extra space to store which rows/columns need to be zeroed, you will use the first row and first column of the matrix as markers.
+Set markers:
+
+When you find a 0 in the matrix, use the first element of the corresponding row and column to mark that row and column for zeroing later.
+For example, if matrix[i][j] == 0, you set matrix[i][0] = 0 (to mark the row) and matrix[0][j] = 0 (to mark the column).
+Handle the first row and column separately:
+
+Since you’re using the first row and column as markers, you need to separately check if the first row or first column contains a 0 originally.
+If they do, then at the end, the entire first row/column should be set to 0 too.
+Use the markers to zero out rows and columns:
+
+Now that you've marked the rows and columns, you go through the matrix again.
+If the first element of a row or column is 0, set all the elements in that row or column to 0.
+Zero out the first row and first column (if necessary):
+
+After the above step, if you had identified in the beginning that the first row or column needs to be set to 0, do that now.
+Example Walkthrough:
+Let's take the example input:
+
+text
+Copy code
+matrix = [[1,1,1],
+          [1,0,1],
+          [1,1,1]]
+Mark the rows and columns:
+
+We scan the matrix and find a 0 at matrix[1][1].
+So, we mark matrix[1][0] = 0 (for the row) and matrix[0][1] = 0 (for the column).
+Now, the matrix looks like this (with markers):
+
+text
+Copy code
+matrix = [[1, 0, 1],
+          [0, 0, 1],
+          [1, 1, 1]]
+Use markers to set zeros:
+
+Look at row 1: since matrix[1][0] = 0, set the entire row 1 to 0s.
+Look at column 1: since matrix[0][1] = 0, set the entire column 1 to 0s.
+After applying this, the matrix looks like:
+
+text
+Copy code
+matrix = [[1, 0, 1],
+          [0, 0, 0],
+          [1, 0, 1]]
+Handle the first row and column:
+
+In this case, the first row and first column don't need to be zeroed (because they didn't originally contain any 0s), so we leave them as is.
+Key Points:
+Markers: We use the first row and column to mark which rows and columns need to be zeroed.
+In-Place: No extra space is used apart from the original matrix itself and a few variables to track the first row and column.
+Two Passes:
+First pass to identify which rows and columns should be zeroed.
+Second pass to set the correct rows and columns to zero.
+
+Source Code:-
+
+using System;
+
+class Program
+{
+    public static void SetZeroes(int[][] matrix)
+    {
+        int m = matrix.Length;    // Number of rows
+        int n = matrix[0].Length; // Number of columns
+
+        bool firstRowZero = false, firstColZero = false;
+
+        // Check if the first row has a zero
+        for (int j = 0; j < n; j++) 
+        {
+            if (matrix[0][j] == 0) 
+            {
+                firstRowZero = true;
+                break;
+            }
+        }
+
+        // Check if the first column has a zero
+        for (int i = 0; i < m; i++) 
+        {
+            if (matrix[i][0] == 0) 
+            {
+                firstColZero = true;
+                break;
+            }
+        }
+
+        // Mark rows and columns to be zeroed using the first row and column
+        for (int i = 1; i < m; i++) 
+        {
+            for (int j = 1; j < n; j++) 
+            {
+                if (matrix[i][j] == 0) 
+                {
+                    matrix[i][0] = 0; // Mark row
+                    matrix[0][j] = 0; // Mark column
+                }
+            }
+        }
+
+        // Zero out the marked rows
+        for (int i = 1; i < m; i++) 
+        {
+            if (matrix[i][0] == 0) 
+            {
+                for (int j = 1; j < n; j++) 
+                {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        // Zero out the marked columns
+        for (int j = 1; j < n; j++) 
+        {
+            if (matrix[0][j] == 0) 
+            {
+                for (int i = 1; i < m; i++) 
+                {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        // Zero out the first row if needed
+        if (firstRowZero) 
+        {
+            for (int j = 0; j < n; j++) 
+            {
+                matrix[0][j] = 0;
+            }
+        }
+
+        // Zero out the first column if needed
+        if (firstColZero) 
+        {
+            for (int i = 0; i < m; i++) 
+            {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+
+    static void PrintMatrix(int[][] matrix)
+    {
+        for (int i = 0; i < matrix.Length; i++)
+        {
+            for (int j = 0; j < matrix[0].Length; j++)
+            {
+                Console.Write(matrix[i][j] + " ");
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+        int[][] matrix = new int[][]
+        {
+            new int[] {1, 1, 1},
+            new int[] {1, 0, 1},
+            new int[] {1, 1, 1}
+        };
+
+        Console.WriteLine("Original Matrix:");
+        PrintMatrix(matrix);
+
+        SetZeroes(matrix);
+
+        Console.WriteLine("\nMatrix after setting zeros:");
+        PrintMatrix(matrix);
+    }
+}
