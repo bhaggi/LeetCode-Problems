@@ -1,12 +1,11 @@
 // Online C# Editor for free
 // Write, Edit and Run your C# code using C# Online Compiler
-
 using System;
 
 public class HelloWorld
 {
     static int[] intersect(int[] nums1,int[] nums2){
-        
+
         int count=0,length_nums1=nums1.Length;
         int length_nums2=nums2.Length;
         int[] result=new int[4];
@@ -37,13 +36,18 @@ public class HelloWorld
         int[] nums1={1,2,2,1};
         int[] nums2={2,1};
         
-        int[] result=intersect(nums1,nums2);
+        List<int> results=new List<int>();
         
-        for(int i=0;i<result.Length;i++){
-            Console.WriteLine(result[i]);
+        for(int i=0;i<result.Length-1;i++){
+            for(int j=i;j<result.Length;j++){
+                if(result[i]==result[j]){
+                    if(!results.Contains(result[i]))
+                        results.Add(result[i]);
+                }
+            }
         }
-        
-        
-        
+        foreach(int number in results){
+            Console.WriteLine(number);
+        }
     }
 }
