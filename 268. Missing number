@@ -1,0 +1,41 @@
+Given an array nums containing n distinct numbers in the range [0, n], return the only number 
+in the range that is missing from the array.
+
+Input: nums = [3,0,1]
+Output: 2
+Explanation: n = 3 since there are 3 numbers, so all numbers are in the range [0,3]. 
+2 is the missing number in the range since it does not appear in nums.
+
+Here, I can achieve this problem by finding the length initially, then doing sorting and following with finding the missing 
+element using for loops. But which is not efficient way. my plan will take O(n log n) and O(n) for sorting which eats time.
+
+So, the efficient way to solve this is to find sum of n natural numbers and substract with the sum of array values.
+
+n(n+1)/2 is the formula to find sum of n natural numbers.
+
+
+using System;
+using System.Collections.Generic;
+
+public class HelloWorld
+{
+    public static int MissingNumber(int[] nums)
+    {
+        int n = nums.Length;
+        int totalSum = n * (n + 1) / 2;
+        int arraySum = 0;
+        foreach (int num in nums)
+        {
+            arraySum += num;
+        }
+        return totalSum - arraySum;
+    }
+    public static void Main(string[] args)
+    {
+        int[] nums={0,2};
+        
+        int missingValue=MissingNumber(nums);
+        
+        Console.WriteLine("Missing number is: "+missingValue);
+    }
+}
