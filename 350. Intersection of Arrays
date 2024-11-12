@@ -2,6 +2,58 @@
 //Each element in the result must appear as many times as it shows in both arrays and you may return the result in any order.
 //Input: nums1 = [1,2,2,1], nums2 = [2,2]
 //Output: [2,2]
+// Our initial approach eats much time of CPU because of for loops, finding the length of arrays, finding duplicates and all.
+// Now, i have changed and came with Dictionaries which makes my program more efficient.
+
+
+using System;
+using System.Collections.Generic;
+
+public class Solution
+{
+    static int[] Intersect(int[] nums1, int[] nums2)
+    {
+        // Step 1: Create a dictionary to count occurrences of each number in nums1
+        Dictionary<int, int> countOccurence = new Dictionary<int, int>();
+        List<int> result = new List<int>();
+
+        // Count each element in nums1
+        foreach (int num in nums1)
+        {
+            if (countOccurence.ContainsKey(num))
+                countOccurence[num]++;
+            else
+                countOccurence[num] = 1;
+        }
+
+        // Step 2: Find intersections with nums2
+        foreach (int num in nums2)
+        {
+            if (countOccurence.ContainsKey(num) && countOccurence[num] > 0)
+            {
+                result.Add(num);
+                countOccurence[num]--;
+            }
+        }
+
+        // Step 3: Return the result as an array
+        return result.ToArray();
+    }
+
+    public static void Main(string[] args)
+    {
+        int[] nums1 = { 9, 4, 9, 8, 4 };
+        int[] nums2 = { 4, 9, 5 };
+
+        int[] result = Intersect(nums1, nums2);
+
+        Console.WriteLine("Intersection of arrays:");
+        foreach (int number in result)
+        {
+            Console.WriteLine(number);
+        }
+    }
+}
 
 using System;
 using System.Collections.Generic;
